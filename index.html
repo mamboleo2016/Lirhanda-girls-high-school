@@ -1,0 +1,1647 @@
+<title>Lirhanda Girls High School</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap">
+
+<style>
+/* =========================================================
+   DESIGN TOKENS
+   Layout: sticky header → hash-routed pages (home / staff)
+   Palette: warm brown + cream + gold accent
+   ========================================================= */
+:root {
+  --brown-deep:  #3B1F0A;
+  --brown-mid:   #6B3A1F;
+  --brown-warm:  #8B5230;
+  --brown-light: #C49A72;
+  --cream:       #FAF6F1;
+  --cream-dark:  #EFE6DA;
+  --white:       #FFFFFF;
+  --text-dark:   #1E0E04;
+  --text-mid:    #4A2C12;
+  --text-muted:  #7A5C42;
+  --gold:        #C8902A;
+
+  --ff-display: 'Playfair Display', Georgia, serif;
+  --ff-body:    'Inter', system-ui, sans-serif;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --shadow-card: 0 2px 14px rgba(59,31,10,0.11);
+  --t: 0.22s ease;
+
+  padding-block: env(safe-area-inset-top,0px) env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --brown-deep:  #F0E0CC;
+    --brown-mid:   #E0C098;
+    --brown-warm:  #C49A72;
+    --brown-light: #8B5230;
+    --cream:       #180E06;
+    --cream-dark:  #221206;
+    --white:       #271506;
+    --text-dark:   #FAF6F1;
+    --text-mid:    #DEC4A3;
+    --text-muted:  #A07850;
+    --gold:        #E8A830;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --brown-deep:  #F0E0CC;
+  --brown-mid:   #E0C098;
+  --brown-warm:  #C49A72;
+  --brown-light: #8B5230;
+  --cream:       #180E06;
+  --cream-dark:  #221206;
+  --white:       #271506;
+  --text-dark:   #FAF6F1;
+  --text-mid:    #DEC4A3;
+  --text-muted:  #A07850;
+  --gold:        #E8A830;
+  color-scheme: dark;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; }
+body {
+  font-family: var(--ff-body);
+  background: var(--cream);
+  color: var(--text-dark);
+  line-height: 1.6;
+  font-size: 16px;
+}
+
+/* ── safe-area top band ── */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0 0 auto;
+  height: env(safe-area-inset-top, 0px);
+  background: #3B1F0A;
+  z-index: 200;
+}
+
+/* ── INNER WRAPPER ── */
+.inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left:  max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 0;
+}
+
+/* ── NAVIGATION ── */
+.site-header {
+  background: #3B1F0A;
+  position: sticky;
+  top: env(safe-area-inset-top, 0px);
+  z-index: 100;
+  box-shadow: 0 2px 18px rgba(0,0,0,0.35);
+}
+.nav-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 13px;
+  gap: 12px;
+  padding-left:  max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  max-width: 1100px;
+  margin: 0 auto;
+}
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.nav-crest {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-display);
+  font-weight: 700;
+  font-size: 17px;
+  color: #3B1F0A;
+  flex-shrink: 0;
+  user-select: none;
+}
+.nav-name strong {
+  font-family: var(--ff-display);
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #FAF6F1;
+  display: block;
+  line-height: 1.2;
+}
+.nav-name span {
+  font-size: 0.67rem;
+  color: var(--brown-light);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 4px;
+  padding: 0;
+}
+.nav-links a, .nav-links button.nav-page {
+  text-decoration: none;
+  color: var(--brown-light);
+  font-size: 0.83rem;
+  font-weight: 500;
+  padding: 6px 11px;
+  border-radius: var(--radius-sm);
+  transition: background var(--t), color var(--t);
+  white-space: nowrap;
+  cursor: pointer;
+  background: none;
+  border: none;
+  font-family: var(--ff-body);
+}
+.nav-links a:hover, .nav-links a:focus-visible,
+.nav-links button.nav-page:hover, .nav-links button.nav-page:focus-visible,
+.nav-links .active { background: rgba(255,255,255,0.10); color: #FAF6F1; outline: none; }
+.nav-toggle {
+  display: none;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.22);
+  color: #FAF6F1;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+@media (max-width: 740px) {
+  .nav-toggle { display: block; }
+  .nav-links {
+    display: none;
+    flex-direction: column;
+    position: absolute;
+    top: 100%;
+    left: 0; right: 0;
+    background: #3B1F0A;
+    padding: 10px max(16px, env(safe-area-inset-left,0px));
+    gap: 3px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .nav-links.open { display: flex; }
+  .nav-links a, .nav-links button.nav-page { padding: 10px 12px; width: 100%; text-align: left; }
+  .site-header { position: relative; }
+}
+
+/* ── PAGE VIEWS ── */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ─────────────────────────────────────────
+   HOME PAGE
+───────────────────────────────────────── */
+.hero {
+  background: linear-gradient(140deg, #3B1F0A 0%, #6B3A1F 100%);
+  color: #FAF6F1;
+  padding-block: 80px 68px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255,255,255,0.022) 0,
+    rgba(255,255,255,0.022) 1px,
+    transparent 1px,
+    transparent 42px
+  );
+}
+.hero-inner { position: relative; max-width: 700px; }
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(200,144,42,0.18);
+  border: 1px solid rgba(200,144,42,0.38);
+  color: var(--gold);
+  font-size: 0.73rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 20px;
+  margin-bottom: 22px;
+}
+.hero h1 {
+  font-family: var(--ff-display);
+  font-size: clamp(2.1rem, 6vw, 3.7rem);
+  font-weight: 700;
+  line-height: 1.12;
+  text-wrap: balance;
+  margin-bottom: 18px;
+  color: #FAF6F1;
+}
+.hero h1 em { font-style: normal; color: var(--gold); }
+.hero-sub {
+  font-size: 1.03rem;
+  color: var(--brown-light);
+  max-width: 540px;
+  line-height: 1.72;
+  margin-bottom: 34px;
+}
+.hero-actions { display: flex; flex-wrap: wrap; gap: 11px; }
+
+/* ── BUTTONS ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  font-family: var(--ff-body);
+  transition: transform var(--t), box-shadow var(--t), opacity var(--t);
+}
+.btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+.btn-gold { background: var(--gold); color: #3B1F0A; }
+.btn-gold:hover { opacity: 0.88; transform: translateY(-1px); box-shadow: 0 6px 22px rgba(200,144,42,0.32); }
+.btn-outline { background: transparent; color: #FAF6F1; border: 1px solid rgba(255,255,255,0.32); }
+.btn-outline:hover { background: rgba(255,255,255,0.08); transform: translateY(-1px); }
+.btn-brown { background: var(--brown-warm); color: #FAF6F1; }
+.btn-brown:hover { opacity: 0.88; transform: translateY(-1px); }
+
+/* ── STATS BAND ── */
+.stats-band { background: var(--brown-warm); padding-block: 26px; }
+.stats-grid {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: max(16px,env(safe-area-inset-left,0px));
+  padding-right: max(16px,env(safe-area-inset-right,0px));
+}
+.stat-item {
+  flex: 1 1 150px;
+  text-align: center;
+  padding: 14px 20px;
+  border-right: 1px solid rgba(255,255,255,0.14);
+}
+.stat-item:last-child { border-right: none; }
+.stat-num {
+  font-family: var(--ff-display);
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: #FAF6F1;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+.stat-label {
+  font-size: 0.72rem;
+  color: rgba(250,246,241,0.62);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* ── GENERIC SECTION ── */
+section, .section { padding-block: 68px; }
+.alt-bg { background: var(--white); }
+
+.section-label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--brown-warm);
+  margin-bottom: 7px;
+}
+.section-title {
+  font-family: var(--ff-display);
+  font-size: clamp(1.55rem, 4vw, 2.35rem);
+  font-weight: 700;
+  color: var(--text-dark);
+  text-wrap: balance;
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+.section-lead {
+  font-size: 0.98rem;
+  color: var(--text-muted);
+  max-width: 540px;
+  line-height: 1.78;
+  margin-bottom: 44px;
+}
+
+/* ── PILLARS ── */
+.pillars-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 18px;
+}
+.pillar-card {
+  background: var(--cream);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--radius-md);
+  padding: 26px 22px;
+  transition: box-shadow var(--t), transform var(--t);
+}
+.alt-bg .pillar-card { background: var(--cream); }
+.pillar-card:hover { box-shadow: var(--shadow-card); transform: translateY(-3px); }
+.pillar-icon {
+  width: 42px; height: 42px;
+  background: #3B1F0A;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.25rem;
+  margin-bottom: 14px;
+}
+.pillar-card h3 {
+  font-family: var(--ff-display);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 7px;
+}
+.pillar-card p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.65; }
+
+/* ── LEADERSHIP TABLE ── */
+.leadership-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+.leadership-table th {
+  background: #3B1F0A;
+  color: #FAF6F1;
+  text-align: left;
+  padding: 11px 16px;
+  font-size: 0.75rem;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.leadership-table td {
+  padding: 11px 16px;
+  border-bottom: 1px solid var(--cream-dark);
+  color: var(--text-dark);
+  vertical-align: top;
+}
+.leadership-table tr:last-child td { border-bottom: none; }
+.leadership-table tr:nth-child(even) td { background: rgba(0,0,0,0.02); }
+.role-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--brown-warm);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* ── DEPARTMENTS ── */
+.dept-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+}
+.dept-card {
+  padding: 18px 16px;
+  background: var(--cream-dark);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--brown-warm);
+}
+.alt-bg .dept-card { background: var(--cream-dark); }
+.dept-card strong { display: block; font-size: 0.88rem; color: var(--text-dark); margin-bottom: 3px; }
+.dept-card span { font-size: 0.8rem; color: var(--text-muted); }
+
+/* ── CO-CURRICULAR ── */
+.cocurr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+.cocurr-card {
+  background: var(--cream);
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--radius-md);
+  padding: 20px 18px;
+  display: flex;
+  gap: 14px;
+  align-items: flex-start;
+}
+.cocurr-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.cocurr-card strong { display: block; font-size: 0.93rem; color: var(--text-dark); margin-bottom: 3px; }
+.cocurr-card span { font-size: 0.81rem; color: var(--text-muted); }
+
+/* ── SUBJECTS ── */
+.subjects-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(195px, 1fr));
+  gap: 10px;
+}
+.subject-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background: var(--cream-dark);
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--brown-warm);
+  font-size: 0.86rem;
+  font-weight: 500;
+  color: var(--text-mid);
+}
+
+/* ── NEWS ── */
+.news-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 18px;
+}
+.news-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--t);
+}
+.alt-bg .news-card { background: var(--cream); }
+.news-card:hover { transform: translateY(-4px); }
+.news-stripe { height: 5px; background: var(--brown-warm); }
+.news-stripe.gold { background: var(--gold); }
+.news-stripe.deep { background: #3B1F0A; }
+.news-body { padding: 22px; }
+.news-tag {
+  font-size: 0.67rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brown-warm);
+  margin-bottom: 7px;
+}
+.news-card h3 {
+  font-family: var(--ff-display);
+  font-size: 1.02rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 7px;
+  text-wrap: balance;
+}
+.news-card p { font-size: 0.83rem; color: var(--text-muted); line-height: 1.6; }
+.news-date { font-size: 0.74rem; color: var(--text-muted); margin-top: 11px; font-variant-numeric: tabular-nums; }
+
+/* ── QUAKERS BAND ── */
+.quakers-band {
+  background: var(--brown-deep);
+  padding-block: 40px;
+}
+.quakers-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+  padding-left: max(16px,env(safe-area-inset-left,0px));
+  padding-right: max(16px,env(safe-area-inset-right,0px));
+}
+.quakers-band h3 {
+  font-family: var(--ff-display);
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #FAF6F1;
+  margin-bottom: 10px;
+}
+.quakers-band p { font-size: 0.92rem; color: var(--brown-light); line-height: 1.75; }
+.quakers-tag {
+  display: inline-block;
+  background: rgba(200,144,42,0.18);
+  border: 1px solid rgba(200,144,42,0.38);
+  color: var(--gold);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+/* ── CONTACT ── */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: start;
+}
+@media (max-width: 640px) { .contact-grid { grid-template-columns: 1fr; } }
+.contact-info { display: flex; flex-direction: column; gap: 18px; }
+.contact-row { display: flex; gap: 13px; align-items: flex-start; }
+.contact-icon {
+  width: 36px; height: 36px;
+  background: #3B1F0A;
+  border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+.contact-row strong {
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 2px;
+}
+.contact-row span { font-size: 0.92rem; color: var(--text-dark); }
+
+.contact-form { display: flex; flex-direction: column; gap: 13px; }
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+.form-group label { font-size: 0.77rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.04em; }
+.form-group input,
+.form-group textarea,
+.form-group select {
+  padding: 9px 13px;
+  border: 1px solid var(--cream-dark);
+  border-radius: var(--radius-sm);
+  background: var(--cream);
+  color: var(--text-dark);
+  font-family: var(--ff-body);
+  font-size: 0.88rem;
+  transition: border-color var(--t);
+}
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus { outline: none; border-color: var(--brown-warm); }
+.form-group textarea { resize: vertical; min-height: 100px; }
+.form-success {
+  display: none;
+  background: rgba(59,31,10,0.07);
+  border: 1px solid var(--brown-light);
+  color: var(--text-mid);
+  padding: 13px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+}
+
+/* ─────────────────────────────────────────
+   STAFF PAGE
+───────────────────────────────────────── */
+.staff-hero {
+  background: linear-gradient(140deg, #3B1F0A 0%, #6B3A1F 100%);
+  padding-block: 56px 48px;
+  position: relative;
+  overflow: hidden;
+}
+.staff-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255,255,255,0.022) 0,
+    rgba(255,255,255,0.022) 1px,
+    transparent 1px,
+    transparent 42px
+  );
+}
+.staff-hero-inner { position: relative; }
+.staff-hero h1 {
+  font-family: var(--ff-display);
+  font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 700;
+  color: #FAF6F1;
+  text-wrap: balance;
+  line-height: 1.15;
+  margin-bottom: 10px;
+}
+.staff-hero p { font-size: 1rem; color: var(--brown-light); max-width: 500px; line-height: 1.7; }
+
+/* Staff filter tabs */
+.staff-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 36px;
+}
+.staff-tab {
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--cream-dark);
+  background: var(--cream);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--ff-body);
+  transition: background var(--t), color var(--t), border-color var(--t);
+}
+.staff-tab:hover { border-color: var(--brown-light); color: var(--text-dark); }
+.staff-tab.active {
+  background: #3B1F0A;
+  color: #FAF6F1;
+  border-color: #3B1F0A;
+}
+
+/* Staff grid */
+.staff-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 20px;
+}
+.staff-card {
+  background: var(--white);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--t);
+}
+.staff-card:hover { transform: translateY(-4px); }
+.staff-photo {
+  width: 100%;
+  aspect-ratio: 4/3;
+  background: var(--cream-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  position: relative;
+  overflow: hidden;
+}
+.staff-photo-placeholder {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  background: var(--brown-warm);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--ff-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: #FAF6F1;
+}
+.staff-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+}
+.staff-info { padding: 18px 16px; }
+.staff-role {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brown-warm);
+  margin-bottom: 4px;
+}
+.staff-card h3 {
+  font-family: var(--ff-display);
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 8px;
+}
+.staff-card p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.staff-dept-badge {
+  display: inline-block;
+  margin-top: 10px;
+  background: var(--cream-dark);
+  color: var(--text-mid);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 12px;
+}
+
+/* ── FOOTER ── */
+.site-footer {
+  background: #3B1F0A;
+  color: var(--brown-light);
+  padding-block: 38px 24px;
+}
+.footer-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding-left: max(16px,env(safe-area-inset-left,0px));
+  padding-right: max(16px,env(safe-area-inset-right,0px));
+}
+.footer-top {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 26px;
+}
+.footer-brand strong {
+  font-family: var(--ff-display);
+  font-size: 1.05rem;
+  color: #FAF6F1;
+  display: block;
+  margin-bottom: 5px;
+}
+.footer-brand p { font-size: 0.8rem; line-height: 1.65; max-width: 270px; }
+.footer-links h4 {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #FAF6F1;
+  margin-bottom: 10px;
+}
+.footer-links ul { list-style: none; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.footer-links a { text-decoration: none; color: var(--brown-light); font-size: 0.83rem; transition: color var(--t); cursor: pointer; }
+.footer-links a:hover { color: #FAF6F1; }
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.1);
+  padding-top: 18px;
+  font-size: 0.76rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  *, .pillar-card, .news-card, .staff-card, .btn { transition: none !important; }
+}
+</style>
+
+<!-- ══════════════ HEADER ══════════════ -->
+<header class="site-header" id="top">
+  <nav class="nav-wrap" aria-label="Main navigation">
+    <div class="nav-brand" onclick="showPage('home')" role="link" tabindex="0" aria-label="Lirhanda Girls High School — home">
+      <div class="nav-crest" aria-hidden="true">LGH</div>
+      <div class="nav-name">
+        <strong>Lirhanda Girls</strong>
+        <span>High School · Shinyalu</span>
+      </div>
+    </div>
+    <button class="nav-toggle" id="navToggle" aria-expanded="false" aria-controls="navLinks" aria-label="Toggle menu">☰</button>
+    <ul class="nav-links" id="navLinks" role="list">
+      <li><a href="#about" onclick="showPage('home')">About</a></li>
+      <li><a href="#academics" onclick="showPage('home')">Academics</a></li>
+      <li><a href="#news" onclick="showPage('home')">News</a></li>
+      <li><button class="nav-page" id="navStaff" onclick="showPage('staff')">Our Staff</button></li>
+      <li><button class="nav-page" id="navStudents" onclick="showPage('students')">Student Leaders</button></li>
+      <li><a href="#contact" onclick="showPage('home')">Contact</a></li>
+    </ul>
+  </nav>
+</header>
+
+<!-- ══════════════ HOME PAGE ══════════════ -->
+<div id="page-home" class="page active">
+
+  <!-- HERO -->
+  <section class="hero" aria-label="Welcome">
+    <div class="inner">
+      <div class="hero-inner">
+        <div class="hero-eyebrow">📍 Shinyalu, Kakamega County &nbsp;·&nbsp; Est. 1913 &nbsp;·&nbsp; KNEC: 37616002</div>
+        <div style="font-family:var(--ff-display);font-size:0.85rem;color:var(--gold);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:16px;font-style:italic;">"Nothing But The Best"</div>
+        <h1>Nurturing <em>Excellence</em> in Every Girl</h1>
+        <p class="hero-sub">
+          Lirhanda Girls High School traces its roots to 1913, when it was founded as the first Friends (Quakers) Primary Boarding School in Kenya. Established as a Girls’ Secondary School in Shinyalu in 1969, we are a 4-stream County School empowering young women with knowledge, values, and skills to lead in a changing world.
+        </p>
+        <div class="hero-actions">
+          <a href="#about" class="btn btn-gold">Discover Our School</a>
+          <button class="btn btn-outline" onclick="showPage('staff')">Meet Our Staff</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STATS BAND -->
+  <div class="stats-band" aria-label="School highlights">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <div class="stat-num">259</div>
+        <div class="stat-label">Total Students</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">7</div>
+        <div class="stat-label">Streams (F4·F3·Gr.10)</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">20</div>
+        <div class="stat-label">Teaching Staff</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">2027</div>
+        <div class="stat-label">Last 8-4-4 Nationally</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">1913</div>
+        <div class="stat-label">Year Founded</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="inner">
+      <p class="section-label">About Us</p>
+      <h2 class="section-title">A School Built on Integrity &amp; Ambition</h2>
+      <p class="section-lead">
+        Founded in 1913 as Kenya’s first Friends (Quakers) Primary Boarding School and re-established as a Girls’ Secondary School in 1969, Lirhanda Girls is a 4-stream County School with 413 students and 33 qualified teachers, set on 8.37 hectares in the verdant hills of Shinyalu, Kakamega County.
+      </p>
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <div class="pillar-icon">📚</div>
+          <h3>Academic Excellence</h3>
+          <p>33 qualified teachers (28 TSC, 5 BOM) delivering 16 KCSE subjects and CBC pathways across 15 classrooms, a library, 3 science labs, and a computer lab.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">💻</div>
+          <h3>ICT &amp; Technology</h3>
+          <p>A dedicated computer/ICT laboratory offering hands-on training in Computer Studies and CBC Computer Science, preparing girls for a digital economy.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">🌱</div>
+          <h3>Character Development</h3>
+          <p>Co-curricular activities, mentorship programmes, and pastoral care cultivate leadership, teamwork, and civic responsibility.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">🤝</div>
+          <h3>Supportive Community</h3>
+          <p>A fully boarding school with 8 dormitories (capacity 500), a sickbay, sports grounds for hockey, volleyball, soccer and netball, and 12 staff houses on campus.</p>
+        </div>
+      </div>
+
+      <div style="margin-top:36px;display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;">
+        <div class="dept-card" style="border-left-color:var(--gold);">
+          <strong>🏫 Principal</strong>
+          <span>Mrs. Jayne Velma Ndengu &mdash; Chief Principal &amp; Secretary B.O.M.</span>
+        </div>
+        <div class="dept-card" style="border-left-color:var(--gold);">
+          <strong>📋 Deputy Principal</strong>
+          <span>Ms. Rosewitha Imbenzi &mdash; School management &amp; staff coordination</span>
+        </div>
+        <div class="dept-card" style="border-left-color:var(--gold);">
+          <strong>🏠 Boarding Mistress</strong>
+          <span>Ms. Praxedes Acheha &mdash; Boarding welfare &amp; student discipline</span>
+        </div>
+        <div class="dept-card" style="border-left-color:var(--gold);">
+          <strong>📚 Head Student</strong>
+          <span>Mitchell Khasandi (Form 3R) &mdash; Students&rsquo; Council 2026/2027</span>
+        </div>
+        <div class="dept-card" style="border-left-color:var(--gold);">
+          <strong>🎓 Deputy Head Captains</strong>
+          <span>Joan Mary (3G) &amp; Rosebella Ingato (10B)</span>
+        </div>
+        <div class="dept-card" style="border-left-color:var(--gold);">
+          <strong>🏠 Boarding Captain</strong>
+          <span>Lavender Odundo (3R)</span>
+        </div>
+        <div class="dept-card" style="border-left-color:var(--gold);">
+          <strong>⚽ Games Captain</strong>
+          <span>Valary Buchera (3R)</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHOOL HISTORY TIMELINE -->
+  <section class="alt-bg">
+    <div class="inner">
+      <p class="section-label">Our Story</p>
+      <h2 class="section-title">Brief History</h2>
+      <p class="section-lead">Over a century of education, faith, and service to Kenya.</p>
+      <div style="display:flex;flex-direction:column;gap:0;position:relative;">
+        <div style="position:absolute;left:18px;top:0;bottom:0;width:2px;background:var(--cream-dark);"></div>
+        <div style="display:flex;gap:20px;align-items:flex-start;padding-bottom:24px;position:relative;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#3B1F0A;color:#FAF6F1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.7rem;flex-shrink:0;z-index:1;">1913</div>
+          <div style="padding-top:8px;"><strong style="color:var(--text-dark);">Founded</strong><p style="font-size:0.86rem;color:var(--text-muted);margin-top:2px;">Lirhanda School established as the <strong>first Friends (Quaker) Primary Boarding School in Kenya</strong>, headed by Miss Roxie Reeves.</p></div>
+        </div>
+        <div style="display:flex;gap:20px;align-items:flex-start;padding-bottom:24px;position:relative;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#3B1F0A;color:#FAF6F1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.7rem;flex-shrink:0;z-index:1;">1962</div>
+          <div style="padding-top:8px;"><strong style="color:var(--text-dark);">Transfer to Kaimosi</strong><p style="font-size:0.86rem;color:var(--text-muted);margin-top:2px;">The school was transferred to Kaimosi to become Kaimosi Girls Boarding School.</p></div>
+        </div>
+        <div style="display:flex;gap:20px;align-items:flex-start;padding-bottom:24px;position:relative;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#3B1F0A;color:#FAF6F1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.7rem;flex-shrink:0;z-index:1;">1963</div>
+          <div style="padding-top:8px;"><strong style="color:var(--text-dark);">Return to Lirhanda</strong><p style="font-size:0.86rem;color:var(--text-muted);margin-top:2px;">Lirhanda Church elders decided to bring back the school. Miss Peal Nancy Spoon brought the school back from Kaimosi.</p></div>
+        </div>
+        <div style="display:flex;gap:20px;align-items:flex-start;padding-bottom:24px;position:relative;">
+          <div style="width:38px;height:38px;border-radius:50%;background:#3B1F0A;color:#FAF6F1;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.7rem;flex-shrink:0;z-index:1;">1964</div>
+          <div style="padding-top:8px;"><strong style="color:var(--text-dark);">Intermediate School</strong><p style="font-size:0.86rem;color:var(--text-muted);margin-top:2px;">Re-opened as an intermediate school, supported by missionaries Edgar T. Hole (<em>Khavele</em>), Roxies Reeves, Rakama, Arthur B. Chilson (<em>Shikanga</em>) and Parker N. Fred (<em>Vuledi</em>).</p></div>
+        </div>
+        <div style="display:flex;gap:20px;align-items:flex-start;padding-bottom:0;position:relative;">
+          <div style="width:38px;height:38px;border-radius:50%;background:var(--gold);color:#3B1F0A;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.7rem;flex-shrink:0;z-index:1;">1969</div>
+          <div style="padding-top:8px;"><strong style="color:var(--text-dark);">Girls’ Secondary School</strong><p style="font-size:0.86rem;color:var(--text-muted);margin-top:2px;">Under the leadership of Mrs. Robai Andega, Lirhanda Girls’ Secondary School was officially started — the chapter that continues to this day.</p></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCHOOL LEADERSHIP -->
+  <section class="alt-bg">
+    <div class="inner">
+      <p class="section-label">Leadership</p>
+      <h2 class="section-title">School Administration</h2>
+      <p class="section-lead">Lirhanda Girls is led by an experienced team committed to the welfare and academic growth of every learner.</p>
+
+      <div style="overflow-x:auto;">
+        <table class="leadership-table" aria-label="School administration">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Position</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Ms. Velma Ndengu</strong></td>
+              <td><span class="role-badge">Principal</span></td>
+            </tr>
+            <tr>
+              <td><strong>Ms. Rosewitha Imbenzi</strong></td>
+              <td><span class="role-badge">Deputy Principal</span></td>
+            </tr>
+            <tr>
+              <td><strong>Mr. Alfred Opatah</strong></td>
+              <td><span class="role-badge">Senior Teacher</span></td>
+            </tr>
+            <tr>
+              <td><strong>Mr. Agoi</strong></td>
+              <td><span class="role-badge">Director of Studies (DOS)</span></td>
+            </tr>
+            <tr>
+              <td><strong>Mr. Aseri Dickson</strong></td>
+              <td><span class="role-badge">Examinations Officer</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- ACADEMIC DEPARTMENTS -->
+  <section>
+    <div class="inner">
+      <p class="section-label">Academics</p>
+      <h2 class="section-title">Departments &amp; Subjects</h2>
+      <p class="section-lead">Our five academic departments are led by experienced Heads of Department, ensuring focused and high-quality instruction across all learning areas.</p>
+
+      <div class="dept-grid" style="margin-bottom:40px;">
+        <div class="dept-card">
+          <strong>Languages</strong>
+          <span>HOD: Madam Emmah Musungu</span>
+        </div>
+        <div class="dept-card">
+          <strong>Humanities</strong>
+          <span>HOD: Mr. Mulindi (first name &amp; TSC to be confirmed)</span>
+        </div>
+        <div class="dept-card">
+          <strong>Sciences</strong>
+          <span>HOD: Mr. Muchesia</span>
+        </div>
+        <div class="dept-card">
+          <strong>Mathematics</strong>
+          <span>HOD: Mr. Okumu</span>
+        </div>
+        <div class="dept-card">
+          <strong>Technicals &amp; ICT</strong>
+          <span>HOD: Mr. Clayton Ambani</span>
+        </div>
+      </div>
+
+      <h3 style="font-family:var(--ff-display);font-size:1.15rem;color:var(--text-dark);margin-bottom:6px;">KCSE Subjects Offered (8-4-4)</h3>
+      <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:18px;">Form 3 &amp; 4 learners &mdash; the Form 3 cohort will be the <strong>last class nationally</strong> to sit KCSE in 2027</p>
+      <div class="subjects-grid" aria-label="KCSE subject offerings">
+        <div class="subject-item">📐 Mathematics</div>
+        <div class="subject-item">🔬 Biology</div>
+        <div class="subject-item">⚗️ Chemistry</div>
+        <div class="subject-item">⚡ Physics</div>
+        <div class="subject-item">💻 Computer Studies</div>
+        <div class="subject-item">📖 English</div>
+        <div class="subject-item">📝 Kiswahili</div>
+        <div class="subject-item">🗺️ Geography</div>
+        <div class="subject-item">📜 History &amp; Government</div>
+        <div class="subject-item">✝️ Christian Religious Education</div>
+        <div class="subject-item">🎨 Art &amp; Design</div>
+        <div class="subject-item">💼 Business Studies</div>
+      </div>
+
+      <div style="margin-top:36px;">
+        <h3 style="font-family:var(--ff-display);font-size:1.15rem;color:var(--text-dark);margin-bottom:6px;">CBC Learning Pathways (Grade 10)</h3>
+        <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:18px;">Grade 10 learners choose from <strong>24 pathways</strong> across career tracks under the Competency Based Curriculum</p>
+        <div class="subjects-grid">
+          <div class="subject-item" style="border-left-color:var(--gold)">📖 Languages &amp; Literature</div>
+          <div class="subject-item" style="border-left-color:var(--gold)">🌍 Social Studies</div>
+          <div class="subject-item" style="border-left-color:var(--gold)">🔬 Pure Sciences</div>
+          <div class="subject-item" style="border-left-color:var(--gold)">⚗️ Applied Sciences</div>
+          <div class="subject-item" style="border-left-color:var(--gold)">💻 Computer Science</div>
+          <div class="subject-item" style="border-left-color:var(--gold)">📐 Mathematics</div>
+          <div class="subject-item" style="border-left-color:var(--gold)">💼 Business &amp; Entrepreneurship</div>
+          <div class="subject-item" style="border-left-color:var(--gold)">🎨 Creative Arts &amp; Sports</div>
+          <div class="subject-item" style="border-left-color:var(--gold)">✝️ Religious Education</div>
+          <div class="subject-item" style="border-left-color:var(--gold)">🌱 Agriculture &amp; Nutrition</div>
+          <div class="subject-item" style="border-left-color:var(--gold)">⚙️ Technical &amp; Engineering</div>
+          <div class="subject-item" style="border-left-color:var(--gold)">🏥 Health Sciences</div>
+        </div>
+        <p style="font-size:0.78rem;color:var(--text-muted);margin-top:10px;">Full 24-pathway details available from the school office. Gold-bordered items denote CBC pathways.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CURRICULUM NOTE -->
+  <div style="background:var(--cream-dark);padding-block:28px;">
+    <div class="inner">
+      <div style="display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;">
+        <div style="font-size:1.8rem;">&#128226;</div>
+        <div>
+          <strong style="font-family:var(--ff-display);font-size:1rem;color:var(--text-dark);display:block;margin-bottom:4px;">Curriculum Transition</strong>
+          <p style="font-size:0.86rem;color:var(--text-mid);line-height:1.75;max-width:680px;">Lirhanda Girls currently runs <strong>two curricula simultaneously</strong>. Form 3 &amp; 4 follow the <strong>8-4-4 KCSE</strong> programme &mdash; our Form 3 cohort (77 students) will be among the <strong>last students nationally</strong> to sit KCSE in 2027. Grade 10 students follow the new <strong>CBC curriculum</strong> with 24 learning pathways. From 2028, the school will run exclusively under CBC (Grade 10&ndash;12).</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CO-CURRICULAR -->
+  <section class="alt-bg">
+    <div class="inner">
+      <p class="section-label">Beyond the Classroom</p>
+      <h2 class="section-title">Co-Curricular Activities</h2>
+      <p class="section-lead">We believe a well-rounded education includes art, service, faith, and the environment. Our clubs and societies develop talent, character, and community spirit.</p>
+
+      <div class="cocurr-grid">
+        <div class="cocurr-card">
+          <div class="cocurr-icon">⛺</div>
+          <div>
+            <strong>Scouts</strong>
+            <span>Patron: Madam Harriet Hungulu. Building leadership, discipline, and community service through scouting.</span>
+          </div>
+        </div>
+        <div class="cocurr-card">
+          <div class="cocurr-icon">🎭</div>
+          <div>
+            <strong>Drama Club</strong>
+            <span>Patron: Mr. Aseri Dickson. Creative expression through performance, storytelling, and stagecraft.</span>
+          </div>
+        </div>
+        <div class="cocurr-card">
+          <div class="cocurr-icon">🎵</div>
+          <div>
+            <strong>Music</strong>
+            <span>Patron: Madam Linda Shikanga. Choral music, instrumentation, and musical festivals.</span>
+          </div>
+        </div>
+        <div class="cocurr-card">
+          <div class="cocurr-icon">✝️</div>
+          <div>
+            <strong>Christian Union (CU)</strong>
+            <span>Patron: Madam Grace. Spiritual growth, fellowship, and service grounded in Christian values.</span>
+          </div>
+        </div>
+        <div class="cocurr-card">
+          <div class="cocurr-icon">🌿</div>
+          <div>
+            <strong>Environment &amp; Pastoral</strong>
+            <span>Patron: Madam Jemimah Were. Environmental conservation, gardening, and pastoral welfare programmes.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- VISION MISSION VALUES -->
+  <section>
+    <div class="inner">
+      <p class="section-label">Who We Are</p>
+      <h2 class="section-title">Vision, Mission &amp; Core Values</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:22px;margin-bottom:40px;">
+        <div class="pillar-card">
+          <div class="pillar-icon">🎯</div>
+          <h3>Our Vision</h3>
+          <p>To be a leading institution that produces a quality girl who can fit in the dynamic society.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">🌟</div>
+          <h3>Our Mission</h3>
+          <p>To mould an intellectual student who can fit in the dynamic society, be morally and emotionally balanced.</p>
+        </div>
+        <div class="pillar-card">
+          <div class="pillar-icon">📋</div>
+          <h3>Quality Policy</h3>
+          <p>We are committed to improve service delivery to mould a quality girl intellectually and realize the National Education sector plan goals and Vision 2030.</p>
+        </div>
+      </div>
+
+      <h3 style="font-family:var(--ff-display);font-size:1.15rem;color:var(--text-dark);margin-bottom:18px;">Core Values — <em style="font-weight:400;color:var(--text-muted)">The LIRHANDA Acrostic</em></h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;">
+        <div class="dept-card"><strong>L — Liberty</strong><span>Professionalism in all we do</span></div>
+        <div class="dept-card"><strong>I — Industriousness</strong><span>Discipline and hard work</span></div>
+        <div class="dept-card"><strong>R — Responsibility</strong><span>Excellence in service</span></div>
+        <div class="dept-card"><strong>H — Humility</strong><span>Respect for all</span></div>
+        <div class="dept-card"><strong>A — Accountability</strong><span>Transparency in conduct</span></div>
+        <div class="dept-card"><strong>N — Nobility</strong><span>Dignity of purpose</span></div>
+        <div class="dept-card"><strong>D — Dignity</strong><span>Tranquillity and calm</span></div>
+        <div class="dept-card"><strong>A — Action</strong><span>Orderliness &amp; spirituality</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUAKERS BAND -->
+  <div class="quakers-band">
+    <div class="quakers-inner">
+      <div class="quakers-tag">🕊️ Friends (Quakers) Sponsored</div>
+      <h3>Rooted in Quaker Values</h3>
+      <p>
+        Lirhanda Girls High School is proudly sponsored by the Friends Church (Quakers), a community known for its commitment to peace, integrity, equality, and simplicity. These values shape our school culture and pastoral care, supported by our school chaplain and the Christian Union. We nurture the whole person — academically, spiritually, and socially.
+      </p>
+    </div>
+  </div>
+
+  <!-- KCSE PERFORMANCE -->
+  <section>
+    <div class="inner">
+      <p class="section-label">Academic Performance</p>
+      <h2 class="section-title">KCSE Mean Score History</h2>
+      <p class="section-lead">Lirhanda Girls has shown a consistent upward trend in KCSE mean scores, reflecting our commitment to academic excellence.</p>
+      <div style="overflow-x:auto;">
+        <table class="leadership-table" aria-label="KCSE mean scores">
+          <thead><tr><th>Year</th><th>Mean Score</th><th>Trend</th></tr></thead>
+          <tbody>
+            <tr><td>2007</td><td><strong>4.2</strong></td><td style="color:var(--text-muted)">—</td></tr>
+            <tr><td>2008</td><td><strong>4.6</strong></td><td style="color:#2a8a2a">▲ +0.4</td></tr>
+            <tr><td>2009</td><td><strong>4.5</strong></td><td style="color:#c0392b">▼ −0.1</td></tr>
+            <tr><td>2010</td><td><strong>4.3</strong></td><td style="color:#c0392b">▼ −0.2</td></tr>
+            <tr><td>2011</td><td><strong>4.8</strong></td><td style="color:#2a8a2a">▲ +0.5</td></tr>
+            <tr><td>2012</td><td><strong>4.9</strong></td><td style="color:#2a8a2a">▲ +0.1</td></tr>
+            <tr><td>2013</td><td><strong>5.5</strong></td><td style="color:#2a8a2a">▲ +0.6</td></tr>
+            <tr><td>2014</td><td><strong>5.4</strong></td><td style="color:#c0392b">▼ −0.1</td></tr>
+            <tr><td>2015</td><td><strong>6.1</strong> 🏆</td><td style="color:#2a8a2a">▲ +0.7 — Best recorded</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="font-size:0.8rem;color:var(--text-muted);margin-top:12px;">Scores shown are from the school's official board of records (2007–2015). More recent results to be updated.</p>
+    </div>
+  </section>
+
+  <!-- PRINCIPALS HONOUR BOARD -->
+  <section class="alt-bg">
+    <div class="inner">
+      <p class="section-label">Our Heritage</p>
+      <h2 class="section-title">Principals — Board of Honour</h2>
+      <p class="section-lead">Since our founding in 1969, Lirhanda Girls has been shaped by the vision and dedication of twelve principals.</p>
+      <div style="overflow-x:auto;">
+        <table class="leadership-table" aria-label="Principals Board of Honour">
+          <thead><tr><th>Name</th><th>Tenure</th></tr></thead>
+          <tbody>
+            <tr><td>Mrs. Robai Andega</td><td>1969 – 1970</td></tr>
+            <tr><td>Mrs. Evelyn Green</td><td>1970 – 1970</td></tr>
+            <tr><td>Mrs. Margaret Barsham</td><td>1971 – 1971</td></tr>
+            <tr><td>Miss Marriam K. Baker</td><td>1972 – 1972</td></tr>
+            <tr><td>Mrs. Fanice Kisuza</td><td>1973 – 1984</td></tr>
+            <tr><td>Miss Rita Weche</td><td>1984 – 1991</td></tr>
+            <tr><td>Mrs. Hilmara Shivachi</td><td>1992 – 1992</td></tr>
+            <tr><td>Mrs. Beatrice G. Agala</td><td>1993 – 2000</td></tr>
+            <tr><td>Mrs. Mary A. Rapando</td><td>2000 – 2006</td></tr>
+            <tr><td>Mrs. Phanice S. Oyatsi</td><td>2006 – 2015</td></tr>
+            <tr><td>Ms. Linda M. M. Zalo</td><td>2015 – 2023</td></tr>
+            <tr><td>C.P. Janet Otieno</td><td>2023 – 2025</td></tr>
+            <tr><td><strong>Ms. Velma Ndengu</strong></td><td><strong>2025 – Present</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWS -->
+  <section id="news">
+    <div class="inner">
+      <p class="section-label">News &amp; Events</p>
+      <h2 class="section-title">Latest from Lirhanda Girls</h2>
+      <p class="section-lead">Updates from our school community — achievements, events, and important announcements.</p>
+
+      <div class="news-grid">
+        <article class="news-card">
+          <div class="news-stripe gold"></div>
+          <div class="news-body">
+            <div class="news-tag">Milestone</div>
+            <h3>Form 4 2027 — Final 8-4-4 KCSE Class</h3>
+            <p>The students joining Form 4 in 2027 will sit the last 8-4-4 KCSE examination as Kenya fully transitions to the CBC curriculum. We are proud to see this chapter through with excellence.</p>
+            <div class="news-date">2027 · Historic Milestone</div>
+          </div>
+        </article>
+        <article class="news-card">
+          <div class="news-stripe"></div>
+          <div class="news-body">
+            <div class="news-tag">Academics</div>
+            <h3>Term 3 End-of-Term Examinations</h3>
+            <p>Students across all forms are preparing for end-of-term examinations. Study timetables have been distributed; parents are encouraged to support learners at home.</p>
+            <div class="news-date">October 2026</div>
+          </div>
+        </article>
+        <article class="news-card">
+          <div class="news-stripe deep"></div>
+          <div class="news-body">
+            <div class="news-tag">Admissions</div>
+            <h3>Form One &amp; Grade 10 Selection — 2027</h3>
+            <p>Parents of Standard 8 and Grade 9 candidates should watch for KUCCPS placement notices. Contact us for enquiries about joining Lirhanda Girls High School.</p>
+            <div class="news-date">Ongoing</div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="alt-bg">
+    <div class="inner">
+      <p class="section-label">Contact Us</p>
+      <h2 class="section-title">Get In Touch</h2>
+      <p class="section-lead">We welcome enquiries from parents, guardians, and partners. Reach us through the details below or send a message.</p>
+
+      <div class="contact-grid">
+        <div class="contact-info">
+          <div class="contact-row">
+            <div class="contact-icon" aria-hidden="true">📍</div>
+            <div>
+              <strong>Location</strong>
+              <span>Shinyalu, Kakamega County, Kenya</span>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon" aria-hidden="true">📮</div>
+            <div>
+              <strong>Postal Address</strong>
+              <span>P.O. Box 87-50100, Kakamega</span>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon" aria-hidden="true">📞</div>
+            <div>
+              <strong>Phone</strong>
+              <span>0718 029 689 &nbsp;/&nbsp; 0713 611 801</span>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon" aria-hidden="true">✉️</div>
+            <div>
+              <strong>Email</strong>
+              <span>lirhandagirlshighschool@yahoo.com</span><br>
+              <span style="font-size:0.82rem;color:var(--text-muted);">lirhandagirishighschool@gmail.com</span>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon" aria-hidden="true">🔑</div>
+            <div>
+              <strong>KNEC Code</strong>
+              <span>37616002</span>
+            </div>
+          </div>
+          <div class="contact-row">
+            <div class="contact-icon" aria-hidden="true">🕐</div>
+            <div>
+              <strong>Office Hours</strong>
+              <span>Monday – Friday, 8:00 am – 5:00 pm</span>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" id="contactForm" novalidate>
+          <div class="form-group">
+            <label for="cf-name">Your Name</label>
+            <input type="text" id="cf-name" name="name" placeholder="e.g. Jane Wanjiku" autocomplete="name" required>
+          </div>
+          <div class="form-group">
+            <label for="cf-email">Email Address</label>
+            <input type="email" id="cf-email" name="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+          <div class="form-group">
+            <label for="cf-subject">Subject</label>
+            <select id="cf-subject" name="subject">
+              <option value="">Select a topic…</option>
+              <option>Admissions Enquiry</option>
+              <option>Fees &amp; Bursaries</option>
+              <option>Academic Support</option>
+              <option>General Enquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="cf-message">Message</label>
+            <textarea id="cf-message" name="message" placeholder="Write your message here…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-gold" style="align-self:flex-start">Send Message</button>
+          <div class="form-success" id="formSuccess" role="status">
+            ✅ Thank you! Your message has been received. We will get back to you shortly.
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</div><!-- end #page-home -->
+
+<!-- ══════════════ STAFF PAGE ══════════════ -->
+<div id="page-staff" class="page">
+
+  <div class="staff-hero">
+    <div class="inner">
+      <div class="staff-hero-inner">
+        <p class="section-label" style="color:var(--gold);margin-bottom:10px;">Our People</p>
+        <h1>Meet Our Staff</h1>
+        <p>Dedicated, experienced, and passionate — the teachers and leaders of Lirhanda Girls High School.</p>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="inner">
+      <!-- Filter tabs -->
+      <div class="staff-tabs" role="tablist" aria-label="Filter staff by department">
+        <button class="staff-tab active" onclick="filterStaff('all')" role="tab" aria-selected="true">All Staff</button>
+        <button class="staff-tab" onclick="filterStaff('admin')" role="tab" aria-selected="false">Administration</button>
+        <button class="staff-tab" onclick="filterStaff('languages')" role="tab" aria-selected="false">Languages</button>
+        <button class="staff-tab" onclick="filterStaff('humanities')" role="tab" aria-selected="false">Humanities</button>
+        <button class="staff-tab" onclick="filterStaff('sciences')" role="tab" aria-selected="false">Sciences</button>
+        <button class="staff-tab" onclick="filterStaff('mathematics')" role="tab" aria-selected="false">Mathematics</button>
+        <button class="staff-tab" onclick="filterStaff('technicals')" role="tab" aria-selected="false">Technicals &amp; ICT</button>
+        <button class="staff-tab" onclick="filterStaff('cocurr')" role="tab" aria-selected="false">Co-Curricular</button>
+      </div>
+
+      <!-- Staff grid -->
+      <div class="staff-grid" id="staffGrid" aria-live="polite">
+        <!-- Cards injected by JS -->
+      </div>
+    </div>
+  </section>
+
+</div><!-- end #page-staff -->
+
+<!-- ══════════════ STUDENT LEADERSHIP PAGE ══════════════ -->
+<div id="page-students" class="page">
+
+  <div class="staff-hero">
+    <div class="inner">
+      <div class="staff-hero-inner">
+        <p class="section-label" style="color:var(--gold);margin-bottom:10px;">Students&#8217; Council 2026/2027</p>
+        <h1>Student Leaders</h1>
+        <p>Elected by their peers, these young women carry the voice and spirit of Lirhanda Girls High School.</p>
+        <p style="font-size:0.82rem;color:var(--brown-light);margin-top:8px;">&#128248; Profile photos coming January 2027 when students report back.</p>
+      </div>
+    </div>
+  </div>
+
+  <section>
+    <div class="inner">
+      <!-- Filter tabs -->
+      <div class="staff-tabs" role="tablist" aria-label="Filter student leaders">
+        <button class="staff-tab active" onclick="filterStudents('all')" role="tab" aria-selected="true">All Leaders</button>
+        <button class="staff-tab" onclick="filterStudents('executive')" role="tab" aria-selected="false">Executive</button>
+        <button class="staff-tab" onclick="filterStudents('captains')" role="tab" aria-selected="false">Captains</button>
+        <button class="staff-tab" onclick="filterStudents('dorm')" role="tab" aria-selected="false">Dorm Captains</button>
+        <button class="staff-tab" onclick="filterStudents('class')" role="tab" aria-selected="false">Class Secretaries</button>
+      </div>
+
+      <!-- Student grid -->
+      <div class="staff-grid" id="studentGrid" aria-live="polite">
+        <!-- Cards injected by JS -->
+      </div>
+    </div>
+  </section>
+
+</div><!-- end #page-students -->
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="site-footer" aria-label="Site footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <strong>Lirhanda Girls High School</strong>
+        <p>A Friends (Quakers) sponsored all-girls secondary school in Shinyalu, Kakamega County, Kenya. <em style="color:var(--gold);font-style:italic;">"Nothing But The Best"</em> · KNEC Code: 37616002.</p>
+      </div>
+      <div class="footer-links">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a onclick="showPage('home');document.getElementById('about').scrollIntoView({behavior:'smooth'})">About Us</a></li>
+          <li><a onclick="showPage('home')">Academics</a></li>
+          <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('news').scrollIntoView({behavior:'smooth'}),50)">News &amp; Events</a></li>
+          <li><a onclick="showPage('staff')">Our Staff</a></li>
+          <li><a onclick="showPage('home');setTimeout(()=>document.getElementById('contact').scrollIntoView({behavior:'smooth'}),50)">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links">
+        <h4>Contact</h4>
+        <ul>
+          <li><span>Shinyalu, Kakamega County</span></li>
+          <li><span>P.O. Box 87-50100</span></li>
+          <li><span>0718 029 689 / 0713 611 801</span></li>
+          <li><span>lirhandagirlshighschool@yahoo.com</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Lirhanda Girls High School. All rights reserved.</span>
+      <span>🕊️ Friends (Quakers) Sponsored · Shinyalu · Kenya</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ── PAGE ROUTING ── */
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  window.scrollTo({top: 0, behavior: 'smooth'});
+
+  // highlight active nav button
+  document.getElementById('navStaff').classList.toggle('active', name === 'staff');
+  document.getElementById('navStudents').classList.toggle('active', name === 'students');
+
+  // close mobile nav
+  const nl = document.getElementById('navLinks');
+  nl.classList.remove('open');
+  document.getElementById('navToggle').setAttribute('aria-expanded', false);
+  document.getElementById('navToggle').textContent = '☰';
+}
+
+/* ── MOBILE NAV ── */
+const toggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+toggle.addEventListener('click', () => {
+  const open = navLinks.classList.toggle('open');
+  toggle.setAttribute('aria-expanded', open);
+  toggle.textContent = open ? '✕' : '☰';
+});
+// anchor clicks on home links
+navLinks.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', () => {
+    navLinks.classList.remove('open');
+    toggle.setAttribute('aria-expanded', false);
+    toggle.textContent = '☰';
+  });
+});
+
+/* ── CONTACT FORM ── */
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const name = document.getElementById('cf-name').value.trim();
+  const email = document.getElementById('cf-email').value.trim();
+  const msg  = document.getElementById('cf-message').value.trim();
+  if (!name || !email || !msg) {
+    alert('Please fill in your name, email address, and message.');
+    return;
+  }
+  document.getElementById('formSuccess').style.display = 'block';
+  this.querySelectorAll('input,textarea,select,button').forEach(el => el.disabled = true);
+});
+
+/* ── STAFF DATA ── */
+/* ── STUDENT LEADERS DATA ── */
+const STUDENTS = [
+  /* Executive */
+  { name:'Mitchell Khasandi',    role:'Head Student',              dept:'executive', stream:'3R',  bio:'Leads the Students’ Council, representing the student body in school governance and championing learner welfare and discipline.',         initials:'MK' },
+  { name:'Joan Mary',            role:'Deputy Head Captain',       dept:'executive', stream:'3G',  bio:'Supports the Head Student and steps in during her absence, fostering unity between the senior school and Grade 10 learners.',             initials:'JM' },
+  { name:'Rosebella Ingato',     role:'Deputy Head Captain',       dept:'executive', stream:'10B', bio:'Co-Deputy representing the CBC Grade 10 cohort, bridging the gap between the two curricula streams in the school.',                        initials:'RI' },
+  { name:'Jacinta Khakasa',      role:'Secretary General',         dept:'executive', stream:'10R', bio:'Keeps official records of Students’ Council meetings, coordinates communication, and ensures resolutions are documented and followed up.', initials:'JK' },
+  { name:'Lavender Odundo',      role:'Overall Boarding Captain',  dept:'executive', stream:'3R',  bio:'Oversees boarding life across all dormitories, ensuring comfort, discipline, and welfare for all boarding students.',                       initials:'LO' },
+  { name:'Mitchelle Khasiala',   role:'Overall Tuition Captain',   dept:'executive', stream:'3R',  bio:'Coordinates academic routines including prep time, library usage, and study discipline to create a conducive learning environment.',          initials:'MK2' },
+
+  /* Captains */
+  { name:'Shirleen Minayo',      role:'Dining Hall Captain',       dept:'captains',  stream:'3R',  bio:'Manages dining hall order and hygiene, coordinates meal-time routines, and liaises with the kitchen on student feedback.',                  initials:'SM' },
+  { name:'Ann Awinja',           role:'Dining Hall Captain',       dept:'captains',  stream:'10R', bio:'Co-Captain for the dining hall, ensuring fair service and a positive mealtime experience for all students.',                                 initials:'AA' },
+  { name:'Faith Luseka',         role:'Academic Captain',          dept:'captains',  stream:'10B', bio:'Champions academic excellence, organises peer study groups, and motivates fellow students to strive for their best results.',               initials:'FL' },
+  { name:'Mitchelle Indasi',     role:'Day Scholars Captain',      dept:'captains',  stream:'10G', bio:'Represents the interests and welfare of day scholars, ensuring they are fully integrated into school life and activities.',                  initials:'MI' },
+  { name:'Valary Buchera',       role:'Games Captain',             dept:'captains',  stream:'3R',  bio:'Leads sports and games, coordinates inter-house competitions, and represents the school in external sporting events.',                      initials:'VB' },
+  { name:'Brilliant Regina',     role:'Environmental Captain',     dept:'captains',  stream:'10B', bio:'Champions environmental conservation on campus, organises clean-up days, tree planting, and eco-awareness campaigns.',                      initials:'BR' },
+  { name:'Joy Lidala',           role:'Technical Rooms Captain',   dept:'captains',  stream:'3R',  bio:'Oversees proper use and care of the computer lab and technical rooms, ensuring equipment is handled responsibly.',                          initials:'JL' },
+  { name:'Eucharist Shiboko',    role:'Science Labs Captain',      dept:'captains',  stream:'3G',  bio:'Ensures science laboratories are kept safe, organised, and well-maintained for effective practical sessions.',                               initials:'ES' },
+  { name:'Brainer Masitsa',      role:'Library Captain',           dept:'captains',  stream:'10R', bio:'Promotes reading culture, maintains library order, and helps fellow students access academic resources effectively.',                        initials:'BM' },
+  { name:'Novel Anyula',         role:'Welfare &amp; Sickbay Captain', dept:'captains', stream:'3G', bio:'Advocates for student health and welfare, liaising with the school nurse and flagging wellbeing concerns to the administration.',           initials:'NA' },
+  { name:'Mitchell Achitsa',     role:'CU Captain',                dept:'captains',  stream:'10G', bio:'Leads the Christian Union, organising devotions, fellowship activities, and spiritual growth programmes for students.',                     initials:'MA' },
+  { name:'Faith Pendo',          role:'Electricity, Water &amp; Furniture Captain', dept:'captains', stream:'10R', bio:'Oversees responsible use of school utilities and furniture, reporting faults and promoting a culture of care for school property.', initials:'FP' },
+  { name:'Whitney Mimo',         role:'Clubs &amp; Societies Captain', dept:'captains', stream:'3R', bio:'Coordinates all student clubs and societies, ensuring active participation and proper documentation of club activities.',                   initials:'WM' },
+  { name:'Viona Lwindi',         role:'Time Keeper',               dept:'captains',  stream:'10R', bio:'Ensures students adhere to the school’s daily timetable, ringing bells and maintaining punctuality across all routines.',              initials:'VL' },
+
+  /* Dorm Captains */
+  { name:'Triza Achieng',        role:'Dorm Captain — Kizito',      dept:'dorm', stream:'10B', bio:'Responsible for order, cleanliness, and welfare of students in Kizito dormitory.',       initials:'TA' },
+  { name:'Redempta Shilwatso',   role:'Dorm Captain — Lumwaji B',   dept:'dorm', stream:'3R',  bio:'Maintains discipline and a positive living environment in Lumwaji B dormitory.',         initials:'RS' },
+  { name:'Purity Ayiera',        role:'Dorm Captain — Kisuza',      dept:'dorm', stream:'3G',  bio:'Leads Kisuza dormitory, ensuring students rest well and the dorm is kept clean and safe.', initials:'PA' },
+  { name:'Patience Chemtai',     role:'Dorm Captain — Elgon',       dept:'dorm', stream:'3R',  bio:'Oversees Elgon dormitory, promoting harmony and good conduct among dormitory residents.',   initials:'PC' },
+  { name:'Lucky Chebet',         role:'Dorm Captain — Kilimanjaro', dept:'dorm', stream:'3R',  bio:'Responsible for Kilimanjaro dormitory, the largest dorm, ensuring order and student welfare.', initials:'LC' },
+  { name:'Shirleen Chimoli',     role:'Dorm Captain — Lumwaji A',   dept:'dorm', stream:'3G',  bio:'Leads Lumwaji A dormitory with a focus on cleanliness, discipline, and peer support.',    initials:'SC' },
+  { name:'Linda Omusula',        role:'Dorm Captain — Longonot',    dept:'dorm', stream:'3G',  bio:'Oversees Longonot dormitory, fostering a safe, welcoming environment for all residents.',  initials:'LOM' },
+
+  /* Class Secretaries */
+  { name:'Sylvia Iminza',        role:'Class Secretary',           dept:'class', stream:'10B', bio:'Elected representative for Grade 10 Blue, voicing class concerns and coordinating classroom activities.', initials:'SI' },
+  { name:'Esther Ojode',         role:'Class Secretary',           dept:'class', stream:'10G', bio:'Represents Grade 10 Green, ensuring smooth communication between students and class teachers.',           initials:'EO' },
+  { name:'Blessed Ichela',       role:'Class Secretary',           dept:'class', stream:'10R', bio:'Class Secretary for Grade 10 Red, advocating for classmates and helping maintain class records.',         initials:'BI' },
+  { name:'Faith Bahati',         role:'Class Secretary',           dept:'class', stream:'3R',  bio:'Represents Form 3 Red, organising class meetings and voicing student concerns to the Students’ Council.', initials:'FB' },
+  { name:'Sharon Khamali',       role:'Class Secretary',           dept:'class', stream:'3G',  bio:'Elected Secretary for Form 3 Green, bridging communication between the class and school leadership.',      initials:'SK' },
+  { name:'Barbra Alivitsa',      role:'Class Secretary',           dept:'class', stream:'4G',  bio:'Form 4 Green representative, supporting classmates as they prepare for their final KCSE examinations.',    initials:'BA' },
+  { name:'Melvin Khamati',       role:'Class Secretary',           dept:'class', stream:'4R',  bio:'Form 4 Red Class Secretary, helping classmates stay organised and motivated in their final year.',         initials:'MKH' },
+];
+
+/* ── RENDER STUDENTS ── */
+function renderStudents(filter) {
+  const grid = document.getElementById('studentGrid');
+  const list = filter === 'all' ? STUDENTS : STUDENTS.filter(s => s.dept === filter);
+  if (!list.length) { grid.innerHTML = '<p style="color:var(--text-muted);grid-column:1/-1">No leaders found in this category.</p>'; return; }
+  grid.innerHTML = list.map(s => `
+    <article class="staff-card">
+      <div class="staff-photo">
+        <div class="staff-photo-placeholder" aria-hidden="true">${s.initials.replace(/\d+$/,'')}</div>
+      </div>
+      <div class="staff-info">
+        <div class="staff-role">${s.role}</div>
+        <h3>${s.name}</h3>
+        <p>${s.bio}</p>
+        <span class="staff-dept-badge" style="background:var(--gold);color:#fff;">${s.stream}</span>
+      </div>
+    </article>
+  `).join('');
+}
+
+function filterStudents(dept) {
+  document.querySelectorAll('#page-students .staff-tab').forEach(t => {
+    const isActive = t.getAttribute('onclick').includes("'" + dept + "'");
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive);
+  });
+  renderStudents(dept);
+}
+
+renderStudents('all');
+
+const STAFF = [
+  /* Administration */
+  { name:'Mrs. Jayne Velma Ndengu',  role:'Principal',                    dept:'admin',      subjects:'Geography, CRE',                        bio:'Chief Principal and Secretary B.O.M. Provides strategic and academic leadership for Lirhanda Girls, championing excellence, discipline, and holistic development. TSC No. 349051.',  initials:'VN' },
+  { name:'Ms. Rosewitha Imbenzi',    role:'Deputy Principal',              dept:'admin',      subjects:'English, Literature',                   bio:'Supports the principal in day-to-day school management, staff coordination, and learner welfare. Also teaches English and Literature. TSC No. 440760.',                           initials:'RI' },
+  { name:'Mr. Alfred Opatah',        role:'Senior Teacher',                dept:'admin',      subjects:'Physics, Chemistry',                    bio:'Senior member of staff responsible for timetabling and teacher mentorship. Teaches Physics and Chemistry. TSC No. 649856.',                                                     initials:'AO' },
+  { name:'Mr. Joseph Agoi',          role:'Director of Studies (DOS)',     dept:'admin',      subjects:'Mathematics, Chemistry',                bio:'Oversees the academic programme, examination preparation, and curriculum delivery. Teaches Mathematics and Chemistry. TSC No. 784946.',                                         initials:'JA' },
+  { name:'Mr. Aseri Dickson',        role:'Examinations Officer',          dept:'admin',      subjects:'English, Literature',                   bio:'Manages all internal and external examination processes, KNEC registration, and exam integrity for the school. TSC No. 581604.',                                              initials:'AD' },
+
+  /* Languages */
+  { name:'Madam Emmah Musungu',      role:'Teacher — English &amp; Literature', dept:'languages', subjects:'English, Literature',             bio:'Passionate about communication and the reading culture. Teaches English and Literature across forms. TSC No. 975359.',                                                          initials:'EM' },
+  { name:'Mr. Ambani Clyton',        role:'HOD — Technicals &amp; ICT',   dept:'technicals', subjects:'French, History',                       bio:'Heads the Technical and ICT department. Also teaches French and History. TSC No. 770077.',                                                                                    initials:'AC' },
+  { name:'Ms. Okello Truphena',      role:'Teacher — Kiswahili &amp; CRE', dept:'languages', subjects:'Kiswahili, CRE',                        bio:'Delivers Kiswahili and Christian Religious Education, nurturing language skills and moral development in learners. TSC No. 590607.',                                           initials:'OT' },
+  { name:'Madam Linda Shikanga',     role:'Music Patron &amp; Teacher',   dept:'languages',  subjects:'Music, Kiswahili',                      bio:'Leads the Music programme — choral, instrumental, and festival participation. Also teaches Kiswahili. TSC No. 1026965.',                                                       initials:'LS' },
+  { name:'Madam Harriet Hungulu',    role:'Scouts Patron &amp; Teacher',  dept:'cocurr',     subjects:'Geography, Kiswahili',                  bio:'Guides the Scouts programme and teaches Geography and Kiswahili, building leadership and environmental stewardship. TSC No. 918530.',                                         initials:'HH' },
+
+  /* Humanities */
+  { name:'Mr. Mulindi',               role:'HOD — Humanities',              dept:'humanities', subjects:'History, Kiswahili',                 bio:'Head of the Humanities department. Teaches History and Kiswahili, connecting learners to their cultural heritage and national identity. First name and TSC to be confirmed.',       initials:'MU' },
+  { name:'Ms. Grace Okanga',         role:'Teacher — History &amp; Kiswahili', dept:'humanities', subjects:'History, Kiswahili',             bio:'Teaches History and Kiswahili with a focus on critical thinking and an appreciation of Kenya\'s past. TSC No. 536223.',                                                         initials:'GO' },
+  { name:'Mr. Francis Muhonje',      role:'Teacher — Biology &amp; Chemistry', dept:'sciences',  subjects:'Biology, Chemistry',               bio:'Teaches Biology and Chemistry, helping learners develop analytical skills and a passion for life and physical sciences. TSC No. 689008.',                                       initials:'FM' },
+  { name:'Madam Jemimah Were',       role:'Environment &amp; Pastoral Lead', dept:'cocurr',  subjects:'CRE, History',                          bio:'Leads environmental and pastoral programmes. Also teaches CRE and History, fostering values-based education. TSC No. 517944.',                                                  initials:'JW' },
+
+  /* Sciences */
+  { name:'Mr. Martin Muchesia',      role:'HOD — Sciences',               dept:'sciences',   subjects:'Biology, Chemistry',                    bio:'Heads the Sciences department, inspiring curiosity through Biology and Chemistry with inquiry-based learning. TSC No. 507798.',                                                 initials:'MM' },
+  { name:'Ms. Praxedes Acheha',      role:'Boarding Mistress &amp; Teacher', dept:'sciences', subjects:'Agriculture, Home Science',            bio:'Boarding Mistress overseeing student welfare. Also teaches Agriculture and Home Science. TSC No. 470969.',                                                                   initials:'PA' },
+  { name:'Ms. Amagove Christabel',   role:'Teacher — Agriculture &amp; Biology', dept:'sciences', subjects:'Agriculture, Biology',            bio:'Teaches Agriculture and Biology, connecting learners to environmental science and life sciences in a practical way. TSC No. 698264.',                                          initials:'ACH' },
+
+  /* Mathematics */
+  { name:'Mr. Stephen Okumu',        role:'HOD — Mathematics',            dept:'mathematics', subjects:'Mathematics, Business Studies',        bio:'Leads Mathematics at Lirhanda Girls. Also teaches Business Studies, building strong analytical and problem-solving foundations. TSC No. 759549.',                             initials:'SO' },
+
+  /* Technicals & ICT */
+  { name:'Mr. Austine Khayimba',     role:'Teacher — Computer Studies &amp; Mathematics', dept:'technicals', subjects:'Computer Studies, Mathematics', bio:'Teaches Computer Studies and Mathematics. Also the school webmaster and developer of this website. Passionate about ICT integration in education and software development.',  initials:'AK' },
+  { name:'Madam Hellen',             role:'Teacher — Art &amp; Design',   dept:'technicals', subjects:'Art &amp; Design',                      bio:'Teaches Art and Design, nurturing creativity and visual expression among learners. Full name to be updated.',                                                                   initials:'HL' },
+];
+
+/* ── RENDER STAFF ── */
+function renderStaff(filter) {
+  const grid = document.getElementById('staffGrid');
+  const list = filter === 'all' ? STAFF : STAFF.filter(s => s.dept === filter);
+  if (!list.length) { grid.innerHTML = '<p style="color:var(--text-muted);grid-column:1/-1">No staff found in this category.</p>'; return; }
+
+  const deptLabel = { admin:'Administration', languages:'Languages', humanities:'Humanities', sciences:'Sciences', mathematics:'Mathematics', technicals:'Technicals &amp; ICT', cocurr:'Co-Curricular' };
+
+  grid.innerHTML = list.map(s => `
+    <article class="staff-card">
+      <div class="staff-photo">
+        <div class="staff-photo-placeholder" aria-hidden="true">${s.initials.replace(/\d+$/,'')}</div>
+      </div>
+      <div class="staff-info">
+        <div class="staff-role">${s.role}</div>
+        <h3>${s.name}</h3>
+        <p>${s.bio}</p>
+        ${s.subjects ? `<p style="font-size:0.8rem;color:var(--gold);font-weight:600;margin-top:6px;">📚 ${s.subjects}</p>` : ''}
+        <span class="staff-dept-badge">${deptLabel[s.dept] || s.dept}</span>
+      </div>
+    </article>
+  `).join('');
+}
+
+function filterStaff(dept) {
+  document.querySelectorAll('.staff-tab').forEach(t => {
+    const isActive = t.getAttribute('onclick').includes("'" + dept + "'");
+    t.classList.toggle('active', isActive);
+    t.setAttribute('aria-selected', isActive);
+  });
+  renderStaff(dept);
+}
+
+renderStaff('all');
+</script>
